@@ -38,12 +38,12 @@ def calculate_statistics(data):
     Returns:
         Dictionary with statistics
     """
-    # TODO: Calculate average heart rate using data['heart_rate'].mean()
-    # TODO: Calculate average systolic BP using data['blood_pressure_systolic'].mean()
-    # TODO: Calculate average glucose level using data['glucose_level'].mean()
-    # TODO: Return as dictionary with keys: 'avg_heart_rate', 'avg_systolic_bp', 'avg_glucose'
-    pass
 
+    return {
+        'avg_heart_rate' : data['heart_rate'].mean(),
+        'avg_systolic_bp' : data['blood_pressure_systolic'].mean(),
+        'avg_glucose' : data['glucose_level'].mean()
+    }
 
 def find_abnormal_readings(data):
     """Find readings with abnormal values.
@@ -54,18 +54,13 @@ def find_abnormal_readings(data):
     Returns:
         Dictionary with counts
     """
-    # TODO: Count readings where heart rate > 90 using boolean indexing
-    # Example: high_hr_count = len(data[data['heart_rate'] > 90])
-    # Or: high_hr_count = (data['heart_rate'] > 90).sum()
-    
-    # TODO: Count readings where systolic BP > 130 using boolean indexing
-    # Example: high_bp_count = len(data[data['blood_pressure_systolic'] > 130])
-    
-    # TODO: Count readings where glucose > 110 using boolean indexing
-    # Example: high_glucose_count = len(data[data['glucose_level'] > 110])
-    
-    # TODO: Return dictionary with keys: 'high_heart_rate', 'high_blood_pressure', 'high_glucose'
-    pass
+
+    return {
+        'high_heart_rate' : len(data[data['heart_rate'] > 90]), 
+        'high_blood_pressure' : len(data[data['blood_pressure_systolic'] > 130]), 
+        'high_glucose' : len(data[data['glucose_level'] > 110])
+    }
+
 
 
 def generate_report(stats, abnormal, total_readings):
@@ -79,12 +74,24 @@ def generate_report(stats, abnormal, total_readings):
     Returns:
         Formatted string report
     """
-    # TODO: Create a formatted report string using f-strings
-    # TODO: Include all statistics with proper formatting using .1f for decimals
-    # Example: f"Heart Rate: {stats['avg_heart_rate']:.1f} bpm"
-    # TODO: Include section headers and labels for readability
-    # TODO: Include total_readings, all averages, and all abnormal counts
-    pass
+
+    report = f"""Health Sensor Data Analysis Report
+==================================
+
+Dataset Summary:
+- Total readings: {total_readings}
+
+Average Measurements:
+- Heart Rate: {stats['avg_heart_rate']:.1f} bpm
+- Systolic BP: {stats['avg_systolic_bp']:.1f} mmHg
+- Glucose Level: {stats['avg_glucose']:.1f} mg/dL
+
+Abnormal Readings:
+- High Heart Rate (>90): {abnormal['high_heart_rate']} readings
+- High Blood Pressure (>130): {abnormal['high_blood_pressure']} readings
+- High Glucose (>110): {abnormal['high_glucose']} readings
+"""
+    return report
 
 
 def save_report(report, filename):
@@ -94,23 +101,19 @@ def save_report(report, filename):
         report: Report string
         filename: Output filename
     """
-    # TODO: Write the report to a file using open() with 'w' mode
-    # Example: with open(filename, 'w') as f:
-    #              f.write(report)
-    pass
-
+    with open(filename, 'w') as f:
+        f.write(report)
+    
 
 def main():
     """Main execution function."""
-    # TODO: Load the data from 'health_data.csv' using load_data()
-    # TODO: Calculate statistics using calculate_statistics()
-    # TODO: Find abnormal readings using find_abnormal_readings()
-    # TODO: Calculate total readings using len(data)
-    # TODO: Generate report using generate_report()
-    # TODO: Save to 'output/analysis_report.txt' using save_report()
-    # TODO: Print success message
-    pass
-
+    data = load_data('health_data.csv')
+    stats = calculate_statistics(data)
+    abnormal = find_abnormal_readings(data)
+    total_readings = len(data)
+    report = generate_report(stats, abnormal, total_readings)
+    save_report(report, 'output/analysis_report.txt')
+    print("Report successfully generate. Output saved to: 'output/analysis_report.txt'")
 
 if __name__ == "__main__":
     main()
